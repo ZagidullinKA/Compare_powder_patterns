@@ -24,4 +24,4 @@ Instructions for use:
 4) Run the program.
 5) The final image will be located in the Output directory.
 
-![]{https://github.com/ZagidullinKA/Compare_powder_patterns/blob/master/Анимация.gif)
+![](https://github.com/ZagidullinKA/Compare_powder_patterns/blob/master/Анимация.gif)
