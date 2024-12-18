@@ -23,3 +23,5 @@ Instructions for use:
 3) Place the theoretical diffraction pattern in the Theoretical directory. The program works with files of the .xye format, obtained when modeling diffraction patterns in the Mercury software package. Theoretically, it will understand all text files in which the angles are located in the first column bcdct, and the intensities in the second.
 4) Run the program.
 5) The final image will be located in the Output directory.
+
+![]https://github.com/ZagidullinKA/Compare_powder_patterns/blob/master/Анимация.gif
