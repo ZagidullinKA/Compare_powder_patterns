@@ -3,6 +3,8 @@ Drawing program for comparison of experimental and theoretical powder patterns.
 
 ![](https://github.com/ZagidullinKA/Compare_powder_patterns/blob/master/Анимация.gif)
 
+## Russian
+
 Эта программа предназначена для создания иллюстраций с парными графиками дифрактограмм.
 В первой версии предполагается работа с экспериментальной и теоретической дифрактограммами для их сравнения и анализа результатов химического синтеза.
 
@@ -13,6 +15,8 @@ Drawing program for comparison of experimental and theoretical powder patterns.
 3) В каталог Theoretical поместить теоретическую дифрактограмму. Программа работает с файлами формата .xye, получаемыми при моделировании дифрактограмм в программном пакете Mercury. Теоретически, она будет понимать все текстовые файлы, в которых в первом столбце бцдцт расположены углы, а во втором - интенсивности.
 4) Запустить программу.
 5) Итоговое изображение будет находиться в каталоге Output.
+
+## English
 
 This program is designed to create illustrations with paired graphs of diffraction patterns.
 The first version is supposed to work with experimental and theoretical diffraction patterns for their comparison and analysis of the results of chemical synthesis.
