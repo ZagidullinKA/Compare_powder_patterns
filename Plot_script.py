@@ -15,7 +15,7 @@ def Script_directory():
     return os.path.dirname(os.path.abspath(__file__))
 
 
-def Checking_for_file(script_dir, directory, file_names):
+def Checking_for_file(directory, file_names):
     if len(file_names) > 1:
         raise ValidationError("Должен быть один файл в "
                               f"директории {directory}")
@@ -28,12 +28,12 @@ def Checking_for_file(script_dir, directory, file_names):
 def Validation_of_files(script_dir, file_names_experimental,
                         file_names_theoretical):
     try:
-        Checking_for_file(script_dir, "Experimental", file_names_experimental)
+        Checking_for_file("Experimental", file_names_experimental)
     except ValidationError as e:
         sys.exit(e)
 
     try:
-        Checking_for_file(script_dir, "Theoretical", file_names_theoretical)
+        Checking_for_file("Theoretical", file_names_theoretical)
     except ValidationError as e:
         sys.exit(e)
 
@@ -140,12 +140,14 @@ def main():
     # берем из файла экспериментальную дифрактограмму
     col_names_exp = ["№", "Position", f"{name_experimental}",
                      "Theo_Int", "I_HZ", "PSO", "d", "Err"]
-    file_exp_path = f"{script_dir}./Experimental/{file_names_experimental[0]}"
+    file_exp_path = os.path.join(
+        script_dir, "Experimental", file_names_experimental[0])
     df_exp_powder = Get_dataframe(col_names_exp, file_exp_path)
 
     # берем из файла теоретическую дифрактограмму
     col_names_theo = ["Position", f"{name_theoretical}", "Err"]
-    file_theo_path = f"{script_dir}./Theoretical/{file_names_theoretical[0]}"
+    file_theo_path = os.path.join(
+        script_dir, "Theoretical", file_names_theoretical[0])
     df_theo_powder = Get_dataframe(col_names_theo, file_theo_path)
 
     # определяем вертикальный сдвиг графиков
