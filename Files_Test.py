@@ -18,9 +18,13 @@ class Logger:
                                       "%(asctime)s-%(levelname)s-%(message)s",
                                       datefmt="%Y-%m-%d %H:%M:%S"
                                      )
-        
+
         # Обработчик для записи в файл
-        file_handler = logging.FileHandler(log_file, mode="w")
+        file_handler = logging.FileHandler(
+                                           log_file,
+                                           mode="w",
+                                           encoding="utf-8"
+                                          )
         file_handler.setFormatter(formatter)
         self.logger.addHandler(file_handler)
 
@@ -42,15 +46,19 @@ class Logger:
         self.logger.error(message)
 
 
+# Глобальная инициализация логера как синглтон
+# logger = Logger()
+
+
 class FilesProcessor:
-    def __init__(self):
+    def __init__(self, logger):
         self.__exp_files = []
         self.__sim_files = []
         self.__struct_files = []
         self.__exp_extension = ("txt", )
         self.__sim_extension = ("xye", "xy", )
         self.__struct_extension = ("cif", "res", )
-        self.logger = Logger()
+        self.logger = logger
         self.__script_dir = self.Script_directory()
 
     def Script_directory(self):
@@ -93,6 +101,15 @@ class FilesProcessor:
         except ValidationError as e:
             sys.exit(e)
 
+    def Exp_files_getter(self):
+        return self.__exp_files
+
+    def Sim_files_getter(self):
+        return self.__sim_files
+
+    def Struct_files_getter(self):
+        return self.__struct_files
+
     def Files_processor(self):
         file_names = self.List_of_files()
         self.Checking_number_of_files(file_names)
@@ -103,8 +120,12 @@ class FilesProcessor:
 
 
 def main():
-    processor = FilesProcessor()
+    logger = Logger()
+    logger.log_info("Старт")
+    processor = FilesProcessor(logger)
     processor.Files_processor()
+    logger.log_info("Успешно завершено!")
+    sys.exit()
 
 
 if __name__ == "__main__":
