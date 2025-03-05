@@ -76,8 +76,8 @@ class FilesProcessor:
                 case "png":
                     self.logger.log_info(f"Обнаружен файл изображения {name}")
                 case _:
-                    self.logger.log_warning(f"WARNING расширение файла {name} "
-                                        "не поддерживается")
+                    self.logger.log_warning(f"Расширение файла {name} "
+                                            "не поддерживается")
 
     def Validation_number(self, file_names: list):
         if len(file_names) == 0:
