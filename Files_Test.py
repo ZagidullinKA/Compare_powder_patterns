@@ -46,10 +46,6 @@ class Logger:
         self.logger.error(message)
 
 
-# Глобальная инициализация логера как синглтон
-# logger = Logger()
-
-
 class FilesProcessor:
     def __init__(self, logger):
         self.__exp_files = []
