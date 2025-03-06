@@ -1,6 +1,7 @@
 import os
 import sys
 import logging
+import pandas as pd
 
 
 class ValidationError(Exception):
@@ -55,20 +56,26 @@ class FilesProcessor:
         self.__sim_extension = ("xye", "xy", )
         self.__struct_extension = ("cif", "res", )
         self.logger = logger
-        self.__script_dir = self.Script_directory()
+        self.__script_dir = self.__Script_directory()
 
-    def Script_directory(self):
-        # Определение директории, в которой находится скрипт
+    def __Script_directory(self):
+        '''
+        Определение директории, в которой находится скрипт
+        '''
         return os.path.dirname(os.path.abspath(__file__))
 
-    def List_of_files(self):
-        # Получение списка файлов в директории Input
+    def __List_of_files(self):
+        '''
+        Получение списка файлов в директории Input
+        '''
         file_names = os.listdir(os.path.join(self.__script_dir, "Input"))
         return file_names
 
-    def Categorize_files_by_extension(self, file_names: list):
-        # Разделение списка файлов на экспериментальные,
-        # теоретические и структурные
+    def __Categorize_files_by_extension(self, file_names: list):
+        '''
+        Разделение списка файлов на экспериментальные,
+        теоретические и структурные
+        '''
         for name in file_names:
             match name.split(".")[-1]:
                 case ext if ext in self.__exp_extension:
@@ -83,7 +90,7 @@ class FilesProcessor:
                     self.logger.log_warning(f"Расширение файла {name} "
                                             "не поддерживается")
 
-    def Validation_number(self, file_names: list):
+    def __Validation_number(self, file_names: list):
         if len(file_names) == 0:
             raise ValidationError("Поместите файлы в директорию Input")
         elif len(file_names) > 10:
@@ -91,34 +98,64 @@ class FilesProcessor:
                                   "не более 10 файлов")
         return True
 
-    def Checking_number_of_files(self, file_names: list):
+    def __Checking_number_of_files(self, file_names: list):
         try:
-            self.Validation_number(file_names)
+            self.__Validation_number(file_names)
         except ValidationError as e:
             sys.exit(e)
 
-    def Exp_files_getter(self):
+    @property
+    def get_exp_files(self):
         return self.__exp_files
 
-    def Sim_files_getter(self):
+    @property
+    def get_sim_files(self):
         return self.__sim_files
 
-    def Struct_files_getter(self):
+    @property
+    def get_struct_files(self):
         return self.__struct_files
 
+    @property
+    def get_script_dir(self):
+        return self.__script_dir
+
     def Files_processor(self):
-        file_names = self.List_of_files()
-        self.Checking_number_of_files(file_names)
-        self.Categorize_files_by_extension(file_names)
+        file_names = self.__List_of_files()
+        self.__Checking_number_of_files(file_names)
+        self.__Categorize_files_by_extension(file_names)
         self.logger.log_debug(f"Experimental files {self.__exp_files}")
         self.logger.log_debug(f"Simulated files {self.__sim_files}")
         self.logger.log_debug(f"Structure files {self.__struct_files}")
+
+
+class FilesReader:
+    def __init__(self, logger, processor):
+        self.logger = logger
+        self.__exp_data = []
+        self.__exp_labels = []
+        self.__sim_data = []
+        self.__sim_labels = []
+        self.__struct_data = []
+        self.__struct_labels = []
+        self.processor = processor
+
+    def Read_data_from_file(self, file_path):
+        df = pd.read_csv(file_path, delim_whitespace=True, header=None)
+        return df
+
+    def File_path(self, file_name):
+        return os.path.join(self.processor.get_script_dir, "Input", file_name)
+
+    def Make_exp_dataset(self):
+        pass
 
 
 def main():
     logger = Logger()
     logger.log_info("Старт")
     processor = FilesProcessor(logger)
+    reader = FilesReader(logger, processor)
     processor.Files_processor()
     logger.log_info("Успешно завершено!")
     sys.exit()
