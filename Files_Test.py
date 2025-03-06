@@ -140,23 +140,51 @@ class FilesReader:
         self.__struct_labels = []
         self.processor = processor
 
-    def Read_data_from_file(self, file_path):
-        df = pd.read_csv(file_path, delim_whitespace=True, header=None)
+    def Read_data_from_file(self, file_path, col_names):
+        df = pd.read_csv(
+                            f"{file_path}",
+                            sep=r'\s+|\t',
+                            encoding="utf-8",
+                            engine="python",
+                            header=0,
+                            names=col_names
+                        )
         return df
 
     def File_path(self, file_name):
         return os.path.join(self.processor.get_script_dir, "Input", file_name)
 
     def Make_exp_dataset(self):
-        pass
+        exp_files = self.processor.get_exp_files
+        for name in exp_files:
+            file_path = self.File_path(name)
+            col_names = ["№", "2theta", f"{name}",
+                         "Theo_Int", "I_HZ", "PSO", "d", "Err"]
+            self.__exp_data.append(self.Read_data_from_file(
+                                                            file_path,
+                                                            col_names
+                                                           )
+                                   )
+            self.__exp_labels.append(name.split(".")[0])
+
+    @property
+    def get_exp_data(self):
+        return self.__exp_data
+
+    @property
+    def get_exp_labels(self):
+        return self.__exp_labels
 
 
 def main():
     logger = Logger()
     logger.log_info("Старт")
     processor = FilesProcessor(logger)
-    reader = FilesReader(logger, processor)
     processor.Files_processor()
+    reader = FilesReader(logger, processor)
+    reader.Make_exp_dataset()
+    print(reader.get_exp_data)
+    print(reader.get_exp_labels)
     logger.log_info("Успешно завершено!")
     sys.exit()
 
