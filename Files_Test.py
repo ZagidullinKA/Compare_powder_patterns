@@ -2,6 +2,8 @@ import os
 import sys
 import logging
 import pandas as pd
+import pickle
+from datetime import datetime
 
 
 class ValidationError(Exception):
@@ -132,15 +134,16 @@ class FilesProcessor:
 class FilesReader:
     def __init__(self, logger, processor):
         self.logger = logger
-        self.__exp_data = []
-        self.__exp_labels = []
-        self.__sim_data = []
-        self.__sim_labels = []
-        self.__struct_data = []
-        self.__struct_labels = []
         self.processor = processor
+        self.maker_data_files = MakerDataFiles(logger)
+        self.__exp_data = pd.DataFrame()
+        self.__exp_labels = []
+        self.__sim_data = pd.DataFrame()
+        self.__sim_labels = []
+        self.__data = pd.DataFrame()
+        self.__labels = []
 
-    def Read_data_from_file(self, file_path, col_names):
+    def __Read_data_from_file(self, file_path, col_names):
         df = pd.read_csv(
                             f"{file_path}",
                             sep=r'\s+|\t',
@@ -151,21 +154,50 @@ class FilesReader:
                         )
         return df
 
-    def File_path(self, file_name):
+    def __File_path(self, file_name):
         return os.path.join(self.processor.get_script_dir, "Input", file_name)
 
-    def Make_exp_dataset(self):
+    def __Make_exp_dataset(self):
         exp_files = self.processor.get_exp_files
         for name in exp_files:
-            file_path = self.File_path(name)
-            col_names = ["№", "2theta", f"{name}",
+            file_path = self.__File_path(name)
+            name_without_extension = name.split(".")[0]
+            col_names = ["№", "2theta", f"{name_without_extension}",
                          "Theo_Int", "I_HZ", "PSO", "d", "Err"]
-            self.__exp_data.append(self.Read_data_from_file(
-                                                            file_path,
-                                                            col_names
-                                                           )
-                                   )
-            self.__exp_labels.append(name.split(".")[0])
+
+            exp_data = self.__Read_data_from_file(
+                            file_path, col_names)[
+                                ["2theta", f"{name_without_extension}"]]
+            self.__exp_data = pd.concat([self.__exp_data, exp_data],
+                                        axis=1)
+
+            self.__exp_labels.append(name_without_extension)
+
+    def __Make_sim_dataset(self):
+        exp_files = self.processor.get_sim_files
+        for name in exp_files:
+            file_path = self.__File_path(name)
+            name_without_extension = name.split(".")[0]
+            col_names = ["2theta", f"{name_without_extension}", "Err"]
+
+            sim_data = self.__Read_data_from_file(
+                            file_path, col_names)[
+                                ["2theta", f"{name_without_extension}"]]
+            self.__sim_data = pd.concat([self.__sim_data, sim_data],
+                                        axis=1)
+
+            self.__sim_labels.append(name.split(".")[0])
+
+    def Make_dataset(self):
+        self.__Make_exp_dataset()
+        self.__Make_sim_dataset()
+        self.__data = pd.concat([self.__sim_data, self.__exp_data],
+                                axis=1)
+        self.__labels = self.__sim_labels + self.__exp_labels
+        self.logger.log_info("Создан общий dataframe с данными порошкограмм")
+        self.maker_data_files.Make_dump(self.__data)
+        self.maker_data_files.Make_csv(self.__data)
+        self.maker_data_files.Make_dictionary_of_csv(self.__labels)
 
     @property
     def get_exp_data(self):
@@ -175,17 +207,62 @@ class FilesReader:
     def get_exp_labels(self):
         return self.__exp_labels
 
+    @property
+    def get_sim_data(self):
+        return self.__sim_data
+
+    @property
+    def get_sim_labels(self):
+        return self.__sim_labels
+
+    @property
+    def get_data(self):
+        return self.__data
+
+
+class MakerDataFiles():
+    def __init__(self, logger):
+        self.logger = logger
+        self.__current_time = ""
+
+    def Make_dump(self, data: list):
+        '''
+        Выгрузка дампа полученного датасета порошкограмм
+        '''
+        with open('dump of powders.pickle', 'wb') as f:
+            pickle.dump(data, f)
+        self.logger.log_info("Выгружен дамп с датасетом порошкограмм")
+
+    def Make_csv(self, data):
+        self.__current_time = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+        data.to_csv(f"Difract_dataset_{self.__current_time}.csv", index=False)
+        self.logger.log_info("Создан CSV файл 'Difract_dataset "
+                             f"{self.__current_time}.csv'"
+                             "с данными порошкограмм")
+
+    def Make_dictionary_of_csv(self, labels):
+        if os.path.exists("CSV files.txt"):
+            with open("CSV files.txt", "a") as file:
+                file.write(f"{self.__current_time} 'Difract_dataset_"
+                           f"{self.__current_time}.csv' is \n\t\t\t {labels}\n")
+        else:
+            with open("CSV files.txt", "w") as file:
+                file.write(f"{datetime.now()} 'Difract_dataset_"
+                           f"{self.__current_time}.csv' is \n\t\t\t {labels}\n")
+
 
 def main():
     logger = Logger()
     logger.log_info("Старт")
+
     processor = FilesProcessor(logger)
     processor.Files_processor()
+
     reader = FilesReader(logger, processor)
-    reader.Make_exp_dataset()
-    print(reader.get_exp_data)
-    print(reader.get_exp_labels)
+    reader.Make_dataset()
+
     logger.log_info("Успешно завершено!")
+
     sys.exit()
 
 

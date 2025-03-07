@@ -1,7 +1,10 @@
-2025-03-06 16:29:52-INFO-Старт
-2025-03-06 16:29:52-INFO-Обнаружен файл изображения picture.png
-2025-03-06 16:29:52-WARNING-Расширение файла vertical_laptop_stand.stl не поддерживается
-2025-03-06 16:29:52-DEBUG-Experimental files ['real.txt']
-2025-03-06 16:29:52-DEBUG-Simulated files ['simulated.xye']
-2025-03-06 16:29:52-DEBUG-Structure files ['structure.cif']
-2025-03-06 16:29:52-INFO-Успешно завершено!
+2025-03-07 15:32:32-INFO-Старт
+2025-03-07 15:32:32-INFO-Обнаружен файл изображения picture.png
+2025-03-07 15:32:32-WARNING-Расширение файла vertical_laptop_stand.stl не поддерживается
+2025-03-07 15:32:32-DEBUG-Experimental files ['real copy.txt', 'real.txt']
+2025-03-07 15:32:32-DEBUG-Simulated files ['simulated.xye']
+2025-03-07 15:32:32-DEBUG-Structure files ['structure.cif']
+2025-03-07 15:32:32-INFO-Создан общий dataframe с данными порошкограмм
+2025-03-07 15:32:32-INFO-Выгружен дамп с датасетом порошкограмм
+2025-03-07 15:32:32-INFO-Создан CSV файл 'Difract_dataset 2025-03-07_15-32-32.csv'с данными порошкограмм
+2025-03-07 15:32:32-INFO-Успешно завершено!
