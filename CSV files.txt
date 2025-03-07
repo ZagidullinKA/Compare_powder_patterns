@@ -1,8 +1,0 @@
-2025-03-07 15:31:29.881710 Difract_dataset 2025-03-07 15-31-29.csv is 
-			 ['simulated', 'real copy', 'real']
-2025-03-07 15-31-31 Difract_dataset 2025-03-07 15-31-31.csv is 
-			 ['simulated', 'real copy', 'real']
-2025-03-07 15-31-32 Difract_dataset 2025-03-07 15-31-32.csv is 
-			 ['simulated', 'real copy', 'real']
-2025-03-07_15-32-32 'Difract_dataset_2025-03-07_15-32-32.csv' is 
-			 ['simulated', 'real copy', 'real']
