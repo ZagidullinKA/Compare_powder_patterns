@@ -1,30 +1,28 @@
 # Compare_powder_patterns
 Drawing program for comparison of experimental and theoretical powder patterns. 
 
-![](https://github.com/ZagidullinKA/Compare_powder_patterns/blob/master/Анимация.gif)
-
 ## Russian
 
-Эта программа предназначена для создания иллюстраций с парными графиками дифрактограмм.
-В первой версии предполагается работа с экспериментальной и теоретической дифрактограммами для их сравнения и анализа результатов химического синтеза.
+Эта программа предназначена для создания иллюстраций с графиками дифрактограмм.
+В данной версии предполагается работа с несколькими экспериментальными и теоретическими дифрактограммами для их сравнения и анализа результатов химического синтеза.
+Количество загружаемых дифрактограмм может быть от 1 до 10.
 
 Инструкция по использованию:
 
-1) В каталогах Experimental, Theoretical и Output удалить файлы .gitkeep. В противном случае программа в дальнейшем выдаст ошибку. Эти файлы нужны были для корректного коммита.
-2) В каталог Experimental поместить текстовый файл с результатами дифракционного эксперимента. Т.к. программа писалась под конкретный формат входных данных, то данные об углах должны располагаться во втором столбце, тогда как экспериментальные интенсивности - в третьем.
-3) В каталог Theoretical поместить теоретическую дифрактограмму. Программа работает с файлами формата .xye, получаемыми при моделировании дифрактограмм в программном пакете Mercury. Теоретически, она будет понимать все текстовые файлы, в которых в первом столбце бцдцт расположены углы, а во втором - интенсивности.
-4) Запустить программу.
-5) Итоговое изображение будет находиться в каталоге Output.
+1) В каталог INPUT поместить .txt файлы с результатами дифракционного эксперимента или .xye файлы с данными смоделированной дифрактограммы. Файлов должно быть не более 10;
+2) Запустить файл Compare_patterns.py;
+3) В командной строке появится предложение просмотреть график. Если просто нажать Enter или ввести "N" или "n" - программа завершит работу. Если ввести "Y" или "y" - будет отображен график.
+4) В каталоге Output появится .csv файл с обработанными данными, график в формате .png, вспомогательный справочный .txt файл со списком созданных .csv файлов и списком соответствующих исходных файлов, а так же дамп данных.
 
 ## English
 
-This program is designed to create illustrations with paired graphs of diffraction patterns.
-The first version is supposed to work with experimental and theoretical diffraction patterns for their comparison and analysis of the results of chemical synthesis.
+This program is designed to create illustrations with diffraction pattern graphs.
+This version assumes working with several experimental and theoretical diffraction patterns for their comparison and analysis of chemical synthesis results.
+The number of diffraction patterns to be loaded can be from 1 to 10.
 
 Instructions for use:
 
-1) In the Experimental, Theoretical and Output directories, delete the .gitkeep files. Otherwise, the program will return an error later. These files were needed for a correct commit.
-2) Place a text file with the results of the diffraction experiment in the Experimental directory. Since the program was written for a specific format of input data, the data on the angles should be located in the second column, while the experimental intensities - in the third.
-3) Place the theoretical diffraction pattern in the Theoretical directory. The program works with files of the .xye format, obtained when modeling diffraction patterns in the Mercury software package. Theoretically, it will understand all text files in which the angles are located in the first column bcdct, and the intensities in the second.
-4) Run the program.
-5) The final image will be located in the Output directory.
+1) Place .txt files with the results of the diffraction experiment or .xye files with the simulated diffraction pattern data in the INPUT directory. There should be no more than 10 files;
+2) Run the Compare_patterns.py file;
+3) A prompt to view the graph will appear in the command line. If you simply press Enter or enter "N" or "n" - the program will exit. If you enter "Y" or "y" - the graph will be displayed.
+4) The Output directory will contain a .csv file with the processed data, a graph in .png format, an auxiliary reference .txt file with a list of the created .csv files and a list of the corresponding source files, as well as a data dump.
