@@ -12,7 +12,7 @@ class FilesProcessor:
         self.__sim_files = []
         self.__struct_files = []
         self.__exp_extension = ("txt", )
-        self.__sim_extension = ("xye", "xy", )
+        self.__sim_extension = ("xye", )
         self.__struct_extension = ("cif", "res", )
         self.logger = logger
         self.__script_dir = self.__Script_directory()
