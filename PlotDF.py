@@ -42,7 +42,7 @@ class PlotDF():
 
             if xlim is not None:
                 axes[pair].set_xlim(xlim)
-                self.logger.Log_debug(f"Выбранный диапазон значений x: {xlim}")
+                self.logger.Log_debug(f"Выбранный диапазон значений для {y_col}: {xlim}")
 
         self.logger.Log_info("График построен!")
 

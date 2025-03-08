@@ -89,7 +89,7 @@ class FilesReader:
         for name in exp_files:
             file_path = self.__File_path(name)
             name_without_extension = name.split(".")[0]
-            theta_label = "2theta_" + name
+            theta_label = "2theta_" + name_without_extension
             col_names = ["№", theta_label, name_without_extension,
                          "Theo_Int", "I_HZ", "PSO", "d", "Err"]
 
@@ -112,7 +112,7 @@ class FilesReader:
         for name in exp_files:
             file_path = self.__File_path(name)
             name_without_extension = name.split(".")[0]
-            theta_label = "2theta_" + name
+            theta_label = "2theta_" + name_without_extension
             col_names = [theta_label, name_without_extension, "Err"]
 
             sim_data = self.__Read_data_from_file(
